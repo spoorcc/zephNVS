@@ -3,9 +3,21 @@ language: ruby
 services:
   - docker
 
-before_install:
-  - docker build -t zephnvs/ubuntu-gcc containers/ubuntu-gcc
-  - docker run zephnvs/ubuntu-gcc /bin/sh -c "ls"
+jobs:
+  include:
+      - language: ruby
+        before_install:
+        - docker build -t zephnvs/ubuntu-gcc containers/ubuntu-gcc
+        - docker run zephnvs/ubuntu-gcc /bin/sh -c "ls"
+      - language: ruby
+        before_install:
+        - docker build -t zephnvs/cmake-avr containers/cmake-avr
+      - language: ruby
+        before_install:
+        - docker build -t zephnvs/ubuntu-stm8 containers/cmake-stm8
+      - language: ruby
+        before_install:
+        - docker build -t zephnvs/ubuntu-msp430 containers/ubuntu-msp430
 
 script:
   - mkdir -p build
