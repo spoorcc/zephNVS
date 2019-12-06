@@ -8,4 +8,8 @@ before_install:
   - docker run zephnvs/ubuntu-gcc /bin/sh -c "ls"
 
 script:
-  - ls
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make
+  - make test
