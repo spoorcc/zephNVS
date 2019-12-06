@@ -8,20 +8,18 @@ jobs:
       - language: ruby
         before_install:
         - docker build -t zephnvs/ubuntu-gcc containers/ubuntu-gcc
-        - docker run zephnvs/ubuntu-gcc /bin/sh -c "ls"
+        script:
+        - docker run -v $(pwd):/src:ro zephnvs/ubuntu-gcc /bin/sh -c "mkdir -p build; cd build; cmake /src; make; make test"
       - language: ruby
         before_install:
         - docker build -t zephnvs/cmake-avr containers/cmake-avr
+        script:
+        - docker run -v $(pwd):/src:ro zephnvs/cmake-avr /bin/sh -c "mkdir -p build; cd build; cmake -DBUILD_AVR=ON /src; make"
       - language: ruby
         before_install:
-        - docker build -t zephnvs/ubuntu-stm8 containers/cmake-stm8
+        - docker build -t zephnvs/cmake-stm8 containers/cmake-stm8
       - language: ruby
         before_install:
-        - docker build -t zephnvs/ubuntu-msp430 containers/ubuntu-msp430
-
-script:
-  - mkdir -p build
-  - cd build
-  - cmake ..
-  - make
-  - make test
+        - docker build -t zephnvs/cmake-msp430 containers/cmake-msp430
+        script:
+        - docker run -v $(pwd):/src:ro zephnvs/cmake-msp430 /bin/sh -c "mkdir -p build; cd build; cmake -DBUILD_MSP430=ON /src; make"
