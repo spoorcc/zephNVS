@@ -37,5 +37,6 @@ add_library(mocks SHARED flash_mock.cpp
                          mutex_mock.cpp
                          crc8_mock.cpp
                          device_mock.cpp)
+add_dependencies(mocks CppUTest-project)
 
 add_library_test("nvs")
