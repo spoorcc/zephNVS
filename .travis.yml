@@ -1,0 +1,11 @@
+language: ruby
+
+services:
+  - docker
+
+before_install:
+  - docker build -t zephnvs/ubuntu-gcc containers/ubuntu-gcc
+  - docker run zephnvs/ubuntu-gcc /bin/sh -c "ls"
+
+script:
+  - ls
