@@ -18,6 +18,8 @@ jobs:
       - language: ruby
         before_install:
         - docker build -t zephnvs/cmake-stm8 containers/cmake-stm8
+        script:
+        - docker run -v $(pwd):/src:ro zephnvs/cmake-stm8 /bin/sh -c "mkdir -p build; cd build; cmake -DBUILD_STM8=ON /src; make"
       - language: ruby
         before_install:
         - docker build -t zephnvs/cmake-msp430 containers/cmake-msp430
