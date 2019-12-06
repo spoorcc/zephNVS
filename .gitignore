@@ -1,0 +1,37 @@
+#-----------------------------------------------
+# Filetypes to ignore
+#-----------------------------------------------
+
+#--------------
+# Generic
+tags
+
+# Tempory files
+*~
+*.csv
+*.swp
+
+*.wlf
+*.vstf
+
+*.cf
+
+#-----------------------------------------------
+# Directories to ignore
+#-----------------------------------------------
+
+# Tempory folder
+tmp
+# Generated targets
+bld
+build
+cscope.*
+
+# Doxygen documentation
+doc/html
+doc/latex
+doc/gh-pages
+public
+
+
+.vscode
