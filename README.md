@@ -1,4 +1,7 @@
 # ZephNVS
+
+[![Build Status](https://travis-ci.org/spoorcc/zephNVS.svg?branch=master)](https://travis-ci.org/spoorcc/zephNVS)
+
 ZephNVS is a port of the Zephyr NVS. This enables to use this wonderfull storage in non-Zephyr projects.
 
 See Documentation on [github.com](https://spoorcc.github.io/zephnvs). 
