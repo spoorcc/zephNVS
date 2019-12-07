@@ -7,6 +7,8 @@ ZephNVS is a port of the Zephyr NVS. This enables to use this wonderfull storage
 See Documentation on [github.com](https://spoorcc.github.io/zephnvs). 
 Or get the source code on [github.com/spoorcc](https://github.com/spoorcc/zephnvs).
 
+Or the original Zephyr NVS documentation at [zephyrproject - nvs](https://docs.zephyrproject.org/latest/reference/storage/nvs/nvs.html).
+
 ## Main design goals
 
 * No Dynamic memory
