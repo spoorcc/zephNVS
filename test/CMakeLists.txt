@@ -33,10 +33,10 @@ endfunction()
 include_directories(${CPPUTEST_INC_DIR})
 link_directories(${CPPUTEST_LIB_DIR} ${CPPUTESTEXT_LIB_DIR})
 
-add_library(mocks SHARED flash_mock.cpp
-                         mutex_mock.cpp
-                         crc8_mock.cpp
-                         device_mock.cpp)
+add_library(mocks SHARED mocks/flash_mock.cpp
+                         mocks/mutex_mock.cpp
+                         mocks/crc8_mock.cpp
+                         mocks/device_mock.cpp)
 add_dependencies(mocks CppUTest-project)
 
 add_library_test("nvs")
