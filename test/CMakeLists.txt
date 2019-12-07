@@ -18,25 +18,38 @@ externalproject_add(CppUTest-project
     INSTALL_COMMAND       ""
  )
 
-function(add_library_test LIBRARY)
+function(add_library_test)
+    set(options)
+    set(oneValueArgs TESTNAME LIBRARY_UNDER_TEST)
+    set(multiValueArgs DEPS)
+    cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
 
-    message(STATUS "Adding test for ${LIBRARY}")
-    set(TESTNAME test_${LIBRARY})
+    message(STATUS "Adding test for ${ARG_LIBRARY_UNDER_TEST}")
 
-    add_executable(${TESTNAME} ${TESTNAME}.cpp)
-    add_dependencies(${TESTNAME} CppUTest-project)
-    target_link_libraries(${TESTNAME} ${LIBRARY} CppUTest CppUTestExt mocks)
+    add_executable("${ARG_TESTNAME}" "${ARG_TESTNAME}.cpp")
+    add_dependencies("${ARG_TESTNAME}" CppUTest-project)
+    target_link_libraries("${ARG_TESTNAME}" "${ARG_LIBRARY_UNDER_TEST}" "${ARG_DEPS}" CppUTest CppUTestExt)
 
-    add_test(NAME ${LIBRARY} COMMAND ${TESTNAME})
+    add_test(NAME "${ARG_TESTNAME}" COMMAND "${ARG_TESTNAME}")
 endfunction()
 
 include_directories(${CPPUTEST_INC_DIR})
 link_directories(${CPPUTEST_LIB_DIR} ${CPPUTESTEXT_LIB_DIR})
 
-add_library(mocks SHARED mocks/flash_mock.cpp
-                         mocks/mutex_mock.cpp
+add_library(mocks SHARED mocks/mutex_mock.cpp
                          mocks/crc8_mock.cpp
                          mocks/device_mock.cpp)
 add_dependencies(mocks CppUTest-project)
 
-add_library_test("nvs")
+add_library(flash_mock SHARED mocks/flash_mock.cpp)
+add_dependencies(flash_mock CppUTest-project)
+
+add_library(emulator SHARED emulator/flash.c)
+
+add_library_test(TESTNAME "test_nvs"
+                 LIBRARY_UNDER_TEST nvs
+                 DEPS mocks flash_mock)
+
+add_library_test(TESTNAME "test_nvs_emulated"
+                 LIBRARY_UNDER_TEST nvs
+                 DEPS mocks emulator)
