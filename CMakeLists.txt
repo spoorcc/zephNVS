@@ -7,6 +7,7 @@ OPTION(BUILD_STM8 "Use SDCC toolchain for compiling library for stm8" OFF)
 
 IF(BUILD_AVR)
     include("${CMAKE_MODULE_PATH}/avr_options.cmake")
+    include_directories(inc/Platforms/AVR)
 ELSEIF(BUILD_MSP430)
     include("${CMAKE_MODULE_PATH}/msp430_options.cmake")
     include_directories(inc/Platforms/MSP430)

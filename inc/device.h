@@ -21,6 +21,7 @@
 extern "C" {
 #endif
 
+struct device;
 
 /**
  * @brief Static device information (In ROM) Per driver instance

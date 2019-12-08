@@ -83,11 +83,13 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 # compiler options for all build types
+add_definitions("-DBUILD_AVR")
 add_definitions("-DF_CPU=${MCU_SPEED}")
 add_definitions("-fpack-struct")
 add_definitions("-fshort-enums")
 add_definitions("-Wall")
 add_definitions("-Werror")
+add_definitions("-Wno-shift-count-overflow")
 add_definitions("-pedantic")
 add_definitions("-pedantic-errors")
 add_definitions("-funsigned-char")

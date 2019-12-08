@@ -5,6 +5,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#ifdef BUILD_AVR
+#include <port.h>
+#endif
+
 #include <drivers/flash.h>
 #include <string.h>
 #include <errno.h>
@@ -293,9 +297,9 @@ static int nvs_flash_wrt_entry(struct nvs_fs *fs, u16_t id, const void *data,
 {
 	int rc;
 	struct nvs_ate entry;
-	size_t ate_size;
+	//size_t ate_size;
 
-	ate_size = nvs_al_size(fs, sizeof(struct nvs_ate));
+	//ate_size = nvs_al_size(fs, sizeof(struct nvs_ate));
 
 	entry.id = id;
 	entry.offset = (u16_t)(fs->data_wra & ADDR_OFFS_MASK);
@@ -410,7 +414,7 @@ static void nvs_sector_advance(struct nvs_fs *fs, u32_t *addr)
  */
 static int nvs_sector_close(struct nvs_fs *fs)
 {
-	int rc;
+	//int rc;
 	struct nvs_ate close_ate;
 	size_t ate_size;
 
@@ -425,7 +429,8 @@ static int nvs_sector_close(struct nvs_fs *fs)
 
 	nvs_ate_crc8_update(&close_ate);
 
-	rc = nvs_flash_ate_wrt(fs, &close_ate);
+	//rc = nvs_flash_ate_wrt(fs, &close_ate);
+	(void) nvs_flash_ate_wrt(fs, &close_ate);
 
 	nvs_sector_advance(fs, &fs->ate_wra);
 

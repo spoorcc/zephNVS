@@ -7,6 +7,10 @@
 #ifndef ZEPHYR_INCLUDE_FS_NVS_H_
 #define ZEPHYR_INCLUDE_FS_NVS_H_
 
+#ifdef BUILD_AVR
+#include <port.h>
+#endif
+
 #include <sys/types.h>
 #include <sys/mutex.h>
 //#include <device.h>

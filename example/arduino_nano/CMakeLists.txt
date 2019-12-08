@@ -12,8 +12,9 @@ if (BUILD_AVR)
   include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
   find_library(C_LIB c)
-  add_avr_executable(LedToggle main.c
-                               bsp/led.c)
-  avr_target_link_libraries(LedToggle ${C_LIB})
+  add_avr_executable(NvsExample main.c
+                               bsp/led.c
+                               bsp/ramflash.c)
+  avr_target_link_libraries(NvsExample ${C_LIB} nvs)
 
 endif()

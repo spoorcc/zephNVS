@@ -17,12 +17,13 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <zephyr/types.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define K_FOREVER (0xFFFFFFFFU)
+#define K_FOREVER (INT16_MAX)
 
 /**
  * @defgroup mutex_apis Mutex APIs
