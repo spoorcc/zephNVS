@@ -29,12 +29,15 @@ typedef struct
     uint32_t value;
 } par_u32_t;
 
+const size_t PAR_COUNT = 400U;
 
 #define DEVNAME "MYDEVICE"
 TEST_BASE(NvsCore)
 {
     struct nvs_fs fs;
     struct device dev;
+
+    par_u16_t par16Bytes[PAR_COUNT];
 
     void setup()
     {
@@ -54,6 +57,38 @@ TEST_BASE(NvsCore)
         mock().clear();
         flash_emulator_teardown();
     }
+
+    void init_nvs()
+    {
+        expectDeviceBindingToBeRetrieved(&dev);
+        nvs_init(&fs, DEVNAME);
+    }
+
+    void init_parameters()
+    {
+        for (size_t i = 0U; i < PAR_COUNT; ++i)
+        {
+            par16Bytes[i].id = i;
+            par16Bytes[i].value = i;
+        }
+    }
+
+    template <class T>
+    void given_parameter_is_written(T const * const par)
+    {
+        LONGS_EQUAL(sizeof(par->value), nvs_write(&fs, par->id, &par->value, sizeof(par->value))); 
+    }
+
+    template <class T>
+    void value_can_be_retrieved(T const * const expectedPar)
+    {
+        typedef typeof(T::value) buf_t;
+
+        buf_t buf;
+
+        LONGS_EQUAL(sizeof(expectedPar->value), nvs_read(&fs, expectedPar->id, &buf, sizeof(buf)));
+        LONGS_EQUAL(expectedPar->value, buf);
+    }
 };
 
 /*------------ Basic -------------------------*/
@@ -72,18 +107,35 @@ TEST(NvsHappyFlow, Basic)
     const par_u16_t myPar1 = {1U, 456U};
     const par_u32_t myPar42 = {42U, 123456U};
 
-    LONGS_EQUAL(sizeof(myPar1.value), nvs_write(&fs, myPar1.id, &myPar1.value, sizeof(myPar1.value))); 
-    LONGS_EQUAL(sizeof(myPar42.value), nvs_write(&fs, myPar42.id, &myPar42.value, sizeof(myPar42.value)));
+    given_parameter_is_written<par_u16_t>(&myPar1);
+    given_parameter_is_written<par_u32_t>(&myPar42);
 
-    uint16_t buf16;
+    value_can_be_retrieved<par_u16_t>(&myPar1);
+    value_can_be_retrieved<par_u32_t>(&myPar42);
+}
 
-    LONGS_EQUAL(sizeof(buf16), nvs_read(&fs, myPar1.id, &buf16, sizeof(buf16))); 
-    LONGS_EQUAL(myPar1.value, buf16);
+TEST_GROUP_BASE(NvsInitialized, NvsCore)
+{
+    void setup()
+    {
+        NvsCore::setup();
 
-    uint32_t buf32;
+        init_parameters();
+        init_nvs();
+    }
+};
 
-    LONGS_EQUAL(sizeof(buf32), nvs_read(&fs, myPar42.id, &buf32, sizeof(buf32))); 
-    LONGS_EQUAL(myPar42.value, buf32);
+TEST(NvsInitialized, ManyParameters)
+{
+    for (size_t i = 0U; i < PAR_COUNT; ++i)
+    {
+        given_parameter_is_written<par_u16_t>(par16Bytes + i);
+    }
+
+    for (size_t i = 0U; i < PAR_COUNT; ++i)
+    {
+        value_can_be_retrieved<par_u16_t>(par16Bytes + i);
+    }
 }
 
 int main(int ac, char** av)
